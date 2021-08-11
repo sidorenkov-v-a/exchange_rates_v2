@@ -6,13 +6,13 @@ from rest_framework import permissions
 from rest_framework.authtoken.views import obtain_auth_token
 
 from rest_framework.routers import DefaultRouter
-from .views import RateViewSet, test
+from .views import CurrencyViewSet, test
 
 router = DefaultRouter()
-router.register('currency', RateViewSet)
+router.register('currency', CurrencyViewSet)
 
 urlpatterns = [
-    path('', RedirectView.as_view(pattern_name='currencies-list')),
+    path('', RedirectView.as_view(pattern_name='currency-list')),
     path('auth/', obtain_auth_token, name='auth'),
     path('', include(router.urls)),
     path('test/<int:add_time>', test)

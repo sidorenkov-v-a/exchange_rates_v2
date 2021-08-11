@@ -1,22 +1,24 @@
 import requests
 from django.core.management import BaseCommand
-
-from api.models import Currency
+from api.models import Currency, DateRate
 from dateutil import parser
+
+CBR_URL = 'https://www.cbr-xml-daily.ru/daily_json.js'
 
 
 class Command(BaseCommand):
 
     def handle(self, *args, **options):
-        response = requests.get('https://www.cbr-xml-daily.ru/daily_json.js')
-        data = response.json()
-        date = parser.parse(data['Date']).date()
+        data = requests.get(CBR_URL).json()
         currencies = data['Valute']
 
-        for currency in currencies.values():
-            name = currency['Name']
-            rate = currency['Value']
-            defaults = {'name': name, 'rate': rate, 'date': date}
-            Currency.objects.update_or_create(
-                name=name, date=date, defaults=defaults
+        for letter_code, currency_data in currencies.items():
+            name = currency_data['Name']
+            currency, created = Currency.objects.get_or_create(
+                name=name, letter_code=letter_code
+            )
+            rate = currency_data['Value']
+            date = parser.parse(data['Date']).date()
+            DateRate.objects.get_or_create(
+                currency=currency, rate=rate, date=date
             )
