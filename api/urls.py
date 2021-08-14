@@ -14,13 +14,13 @@ router.register('currency', CurrencyViewSet)
 urlpatterns = [
     path('auth/', obtain_auth_token, name='auth'),
     path('test/<int:add_time>', test),
+    path('', RedirectView.as_view(pattern_name='schema-swagger-ui')),
     path('', include(router.urls)),
-    path('', RedirectView.as_view(pattern_name='currency-list')),
 ]
 
 schema_view = get_schema_view(
     openapi.Info(
-        title='API проекта Exchange rates',
+        title='API проекта Exchange rates v2',
         default_version='v1',
         description='Проект выполнен в рамках тестового задания',
         contact=openapi.Contact(
