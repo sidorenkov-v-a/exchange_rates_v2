@@ -1,6 +1,7 @@
 from rest_framework.serializers import ModelSerializer
 from .models import Currency, DateRate
 
+
 class DateRateSerializer(ModelSerializer):
     class Meta:
         model = DateRate
@@ -18,5 +19,3 @@ class CurrencySerializer(ModelSerializer):
         data = super().to_representation(instance)
         data['history'] = data.pop('date_rates')
         return data
-
-

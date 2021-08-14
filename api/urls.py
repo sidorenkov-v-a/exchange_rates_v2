@@ -12,10 +12,10 @@ router = DefaultRouter()
 router.register('currency', CurrencyViewSet)
 
 urlpatterns = [
-    path('', RedirectView.as_view(pattern_name='currency-list')),
     path('auth/', obtain_auth_token, name='auth'),
+    path('test/<int:add_time>', test),
     path('', include(router.urls)),
-    path('test/<int:add_time>', test)
+    path('', RedirectView.as_view(pattern_name='currency-list')),
 ]
 
 schema_view = get_schema_view(
